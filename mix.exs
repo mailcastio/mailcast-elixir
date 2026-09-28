@@ -2,7 +2,7 @@ defmodule Mailcast.MixProject do
   use Mix.Project
 
   @github_url "https://github.com/mailcastio/mailcast-elixir"
-  @version "0.0.9"
+  @version "0.0.10"
 
   def project do
     [
