@@ -3,7 +3,8 @@ defmodule Mailcast do
   Mailcast Elixir SDK.
 
   Send email with `Mailcast.Swoosh.Adapter`, verify webhooks with
-  `Mailcast.Webhooks`, and manage templates with `Mailcast.Templates`.
+  `Mailcast.Webhooks`, manage templates with `Mailcast.Templates`, and preview
+  messages with `Mailcast.Emails`.
 
   ## Configuration
 
@@ -38,5 +39,22 @@ defmodule Mailcast do
   fields in `data` with `Mailcast.Swoosh.Helper.set_substitute/2` so they
   expand before the template runs. List markdown fields with
   `Mailcast.Swoosh.Helper.set_markdown/2` to parse those values as markdown.
+
+  ## Preview
+
+  Render a template or individual fields without sending:
+
+      {:ok, %{"subject" => subject, "html" => html, "text" => text}} =
+        Mailcast.Emails.preview(%{
+          template_id: "welcome",
+          data: %{"name" => "John"}
+        })
+
+      {:ok, %{"fields" => %{"message" => html}}} =
+        Mailcast.Emails.preview_fields(%{
+          data: %{"name" => "John", "message" => "Hi **{{name}}**"},
+          substitute: ["message"],
+          markdown: ["message"]
+        })
   """
 end
