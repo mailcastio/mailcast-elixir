@@ -42,7 +42,8 @@ defmodule Mailcast.Swoosh.AdapterTest do
                "transactional" => true,
                "open_tracking" => true,
                "click_tracking" => true,
-               "template_id" => "template_01jzqtmznaexgb9d3rpectx870"
+               "template_id" => "template_01jzqtmznaexgb9d3rpectx870",
+               "idempotency_key" => "unique-idempotency-key"
              } = conn.body_params
 
       conn
@@ -75,6 +76,7 @@ defmodule Mailcast.Swoosh.AdapterTest do
       |> Helper.set_substitute(["message"])
       |> Helper.set_markdown(["message"])
       |> Helper.add_tag("tag1", "value1")
+      |> Helper.set_idempotency_key("unique-idempotency-key")
       |> Swoosh.Email.attachment(%Swoosh.Attachment{
         filename: "test.txt",
         content_type: "text/plain",

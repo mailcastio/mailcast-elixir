@@ -42,6 +42,8 @@ if Code.ensure_loaded?(Swoosh) do
       * `:transactional` (boolean) - indicates if the email is transactional
 
       * `:template_id` (string) - template TypeID or `user_id` to use
+
+      * `:idempotency_key` (string) - key to prevent duplicate emails from being sent
     """
 
     use Swoosh.Adapter, required_config: [:api_key]
@@ -163,6 +165,7 @@ if Code.ensure_loaded?(Swoosh) do
       |> add_markdown(email)
       |> set_transactional(email)
       |> add_template_id(email)
+      |> add_idempotency_key(email)
       |> set_open_tracking(email)
       |> set_click_tracking(email)
     end
@@ -204,6 +207,12 @@ if Code.ensure_loaded?(Swoosh) do
     end
 
     defp add_template_id(map, _email), do: map
+
+    defp add_idempotency_key(map, %{provider_options: %{idempotency_key: key}}) when is_binary(key) do
+      Map.put(map, :idempotency_key, key)
+    end
+
+    defp add_idempotency_key(map, _email), do: map
 
     defp render_recipients(nil), do: nil
 

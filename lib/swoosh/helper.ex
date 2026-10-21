@@ -99,6 +99,25 @@ defmodule Mailcast.Swoosh.Helper do
   end
 
   @doc """
+  Set the idempotency key for the email.
+
+  `idempotency_key` is used to prevent duplicate emails from being sent.
+  Mailcast will return the original email when the same key is sent again.
+  The idempotency key must be unique per domain.
+
+  ## Examples
+
+  ```elixir
+  email
+  |> Mailcast.Swoosh.Helper.set_idempotency_key("record-paystack-1")
+  ```
+  """
+  def set_idempotency_key(email, key) when is_binary(key) do
+    email
+    |> Swoosh.Email.put_provider_option(:idempotency_key, key)
+  end
+
+  @doc """
   Set the data for the email.
   Data is used for variable substitution in the template language.
 

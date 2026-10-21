@@ -47,6 +47,14 @@ defmodule Mailcast.Swoosh.HelperTest do
     end
   end
 
+  describe "set_idempotency_key/2" do
+    test "sets the idempotency key" do
+      email = Swoosh.Email.new()
+      email = Helper.set_idempotency_key(email, "unique-idempotency-key")
+      assert email.provider_options[:idempotency_key] == "unique-idempotency-key"
+    end
+  end
+
   describe "set_data/2 and put_data/3" do
     test "sets data" do
       email = Swoosh.Email.new()
